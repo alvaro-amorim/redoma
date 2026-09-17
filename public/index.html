@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c141c">
+  <meta name="description" content="Simulação 3D de um globo mecânico de loteria, com quantidades configuráveis e seleção pela trajetória física das bolas.">
+  <title>Redoma · Simulador de loteria</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/"}}</script>
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href="./" aria-label="Redoma, início"><span class="brand-icon">◉</span> REDOMA <span class="lab">LAB</span></a>
+    <span class="header-note">LABORATÓRIO DE SORTEIOS</span>
+    <span class="status"><i></i><span id="status">Carregando simulação</span></span>
+  </header>
+  <main>
+    <section class="studio" aria-label="Simulação tridimensional">
+      <div class="scene-heading"><span class="eyebrow">EXPERIMENTO 001</span><h1>O acaso em movimento.</h1><p>Uma redoma. Encontros físicos. Um número de cada vez.</p></div>
+      <div id="viewport" aria-label="Globo 3D. Arraste para girar e use a roda para aproximar.">
+        <div id="loading" role="status">Preparando a redoma…</div>
+      </div>
+      <div class="scene-caption"><span><i class="live-dot"></i> SIMULAÇÃO EM TEMPO REAL</span><button id="camera" class="text-button" type="button">Restaurar câmera ↗</button></div>
+      <div class="machine-stats"><div><span>MECANISMO</span><strong>Rotor + comportas</strong></div><div><span>ROTAÇÃO</span><strong><b id="rpm">0</b> rpm</strong></div><div><span>BOLAS</span><strong>Ø 50 mm · 66 g</strong></div></div>
+    </section>
+    <aside class="panel" aria-label="Controles e resultados">
+      <div class="panel-heading"><span class="eyebrow">PAINEL DE CONTROLE</span><span id="session">SESSÃO 01</span></div>
+      <h2>Prepare seu sorteio</h2>
+      <form id="configuration">
+        <div class="input-row">
+          <label for="total-balls">Total de bolas<input id="total-balls" type="number" inputmode="numeric" min="1" max="100" step="1" value="25" required></label>
+          <label for="draw-count">Números sorteados<input id="draw-count" type="number" inputmode="numeric" min="1" max="25" step="1" value="15" required></label>
+        </div>
+        <button id="apply-config" class="button secondary full" type="submit">Aplicar e preparar</button>
+        <p id="config-message" class="helper" role="status">25 bolas · 15 extrações, sem reposição.</p>
+      </form>
+      <div class="draw-summary"><div><span class="eyebrow">NÚMEROS EXTRAÍDOS</span><p class="counter"><b id="count">00</b><span>/ <span id="target">15</span></span></p></div><div class="latest" id="latest" aria-label="Último número extraído">—</div></div>
+      <progress id="progress" max="15" value="0" aria-label="Progresso das extrações"></progress>
+      <div class="state-row"><span id="phase">Aguardando início</span><span id="remaining">25 na máquina</span></div>
+      <ol id="results" class="results" aria-label="Números em ordem de extração"></ol>
+      <div class="actions"><button id="start" class="button primary" type="button" disabled>▶ Iniciar sorteio</button><button id="pause" class="button secondary" type="button" disabled>Pausar</button></div>
+      <button id="reset" class="text-button reset" type="button">↻ Novo sorteio</button>
+      <div class="speed"><label for="speed">Velocidade da simulação</label><output id="speed-value" for="speed">1×</output><input id="speed" type="range" min=".5" max="3" step=".5" value="1"></div>
+      <details><summary>Como as bolas são escolhidas?</summary><p>O rotor movimenta corpos físicos com gravidade, colisões, atrito e resistência do ar. Duas comportas deixam passar uma bola por vez. O número é registrado quando a bola inteira sai do tubo.</p><p>O acaso vem de pequenas diferenças nas condições iniciais. Nenhum número é previamente escolhido. Esta é uma aproximação numérica de uma máquina mecânica, sem vínculo com a CAIXA.</p></details>
+    </aside>
+  </main>
+  <footer><span id="format">25 bolas · 15 extrações</span><span>Simulador independente · Física de corpos rígidos</span><a href="https://github.com/alvaro-amorim/redoma" target="_blank" rel="noreferrer">Código-fonte ↗</a></footer>
+  <p id="announcement" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+  <noscript>Ative o JavaScript para executar a simulação.</noscript>
+  <script type="module">
+    import('./app.js').catch(error => {
+      console.error(error);
+      document.getElementById('loading').textContent = 'Não foi possível iniciar o 3D. Execute npm install e npm start e use um navegador com WebGL 2.';
+      document.getElementById('status').textContent = 'Falha ao carregar';
+    });
+  </script>
+</body>
+</html>
