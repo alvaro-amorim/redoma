@@ -5,19 +5,60 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: validation-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   physics:
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Core and assets
+            pattern: 'configuration|freefall|elastic|rotor|renaming|browser|static'
+          - name: Default 25 balls
+            pattern: '25/15'
+          - name: Emptying 1 and 10 balls
+            pattern: '1/1 |10/10'
+          - name: 60 balls
+            pattern: '60/6'
+          - name: Emptying 100 balls
+            pattern: '100/100'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - run: npm install
-      - run: npm test
+      - name: Record resolved dependencies
+        if: matrix.name == 'Core and assets'
+        run: |
+          node -e "console.log('LOCKFILE_START'); console.log(require('fs').readFileSync('package-lock.json','utf8')); console.log('LOCKFILE_END')"
+      - name: Verify
+        env:
+          TEST_PATTERN: ${{ matrix.pattern }}
+        run: node --test --test-concurrency=1 --test-name-pattern="$TEST_PATTERN" tests/*.test.mjs
       - name: Check JavaScript syntax
         run: |
           node --check public/physics.js
+          node --check public/app.js
           node --check server.mjs
-          if [ -f public/app.js ]; then node --check public/app.js; fi
+  bundle:
+    name: Ready-to-run static files
+    needs: physics
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install
+      - uses: actions/upload-artifact@v4
+        with:
+          name: redoma-static
+          path: public/
+          retention-days: 30
