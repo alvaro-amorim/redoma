@@ -105,7 +105,7 @@ export class LotteryPhysics {
     Object.assign(this, {
       time: 0, phaseTime: 0, phase: 'ready', paused: false,
       drawn: [], events: [], bodies: [], fault: null, loaded: 0,
-      upper: 0, lower: 0, hopper: 0, motorTarget: 0, motorWork: 0, lastTorque: 0
+      upper: 0, lower: 0, hopper: 0, clearing: false, motorTarget: 0, motorWork: 0, lastTorque: 0
     });
 
     // Group 1: stationary surfaces and sliders. Group 2: balls. Group 4: rotor.
@@ -194,6 +194,12 @@ export class LotteryPhysics {
     this.lower = this.moveSlider(this.lowerBody, this.lower, lowerTarget, SPEC.lowerY, 0.105);
     this.motorTarget = ['mixing', 'feeding', 'isolating', 'releasing', 'between'].includes(this.phase)
       ? SPEC.rpm * Math.PI / 30 : 0;
+    // A packed group can form an arch above the single-ball outlet.
+    // Reverse the actual motor periodically when feeding stalls. No ball is
+    // selected or repositioned: only rotor torque changes, within the same limit.
+    this.clearing = this.phase === 'feeding' && this.phaseTime >= 12;
+    if (this.clearing && Math.floor((this.phaseTime - 12) / 3) % 2 === 0)
+      this.motorTarget *= -1;
     const omega = this.rotor.angvel().z;
     const torque = clamp((this.motorTarget - omega) * 2, -10, 10);
     this.rotor.resetTorques(true);

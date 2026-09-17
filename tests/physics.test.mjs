@@ -72,6 +72,9 @@ for (const [totalBalls, drawCount, seed] of [[25,15,1701],[25,15,7204],[1,1,901]
         assert.ok(sim.phase !== 'loading' || sim.phaseTime < 15,
           JSON.stringify({problem:'loading stalled',totalBalls,loaded:sim.loaded,
             remaining:sim.bodies.filter(b=>!b.entered).map(b=>({id:b.id,p:b.p}))}));
+        assert.ok(sim.phase !== 'feeding' || sim.phaseTime < 180,
+          JSON.stringify({problem:'outlet stalled',totalBalls,time:sim.time,drawn:sim.drawn,clearing:sim.clearing,
+            low:sim.bodies.filter(b=>b.active&&b.p[1]<-.20).map(b=>({id:b.id,p:b.p,v:b.v}))}));
         assert.equal(sim.fault,null,JSON.stringify({phase:sim.phase,time:sim.time,loaded:sim.loaded,drawn:sim.drawn,fault:sim.fault}));
         recorded.push(...sim.events.splice(0));
         if (i>0 && i % (60/DT) === 0)

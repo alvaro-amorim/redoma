@@ -21,7 +21,7 @@ Arraste para orbitar a câmera e use a roda do mouse para aproximar. Há pausa, 
 
 ## Como o resultado surge
 
-Cada bola é um corpo rígido com gravidade, massa, colisão, atrito, restituição, rotação e resistência do ar. Um rotor recebe torque limitado; duas comportas formam uma câmara de extração. O número só é registrado quando a bola inteira cruza a extremidade do tubo de saída. As bolas extraídas continuam na simulação e caem na bandeja.
+Cada bola é um corpo rígido com gravidade, massa, colisão, atrito, restituição, rotação e resistência do ar. Um rotor recebe torque limitado; duas comportas formam uma câmara de extração. Se as bolas formarem um bloqueio sobre a saída, o motor alterna o sentido de rotação para desfazer o agrupamento por contato físico. Esse controle é uma solução do simulador, não uma alegação sobre o mecanismo exato da CAIXA. O número só é registrado quando a bola inteira cruza a extremidade do tubo de saída. As bolas extraídas continuam na simulação e caem na bandeja.
 
 Não há seleção por índice aleatório, embaralhamento dos resultados, teletransporte ou força direcionada ao número vencedor. `crypto.getRandomValues` perturba apenas as condições iniciais. Os testes podem fornecer uma semente para reproduzir uma execução. O motor numérico calcula a física: uma simulação digital não dispensa cálculos e não representa aleatoriedade física verdadeira.
 

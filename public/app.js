@@ -181,7 +181,7 @@ function updateUI() {
   $('target').textContent=drawCount;
   $('progress').max=drawCount;$('progress').value=count;
   $('latest').textContent=count?String(sim.drawn.at(-1)).padStart(2,'0'):'—';
-  $('phase').textContent=sim.fault || (sim.paused?'Pausado':phaseNames[sim.phase]);
+  $('phase').textContent=sim.fault || (sim.paused?'Pausado':sim.clearing?'Desobstruindo a saída':phaseNames[sim.phase]);
   $('status').textContent=sim.fault?'Falha na simulação':sim.paused?'Simulação pausada':phaseNames[sim.phase];
   $('remaining').textContent=sim.phase==='loading'?sim.loaded+'/'+totalBalls+' carregadas':(totalBalls-count)+' na máquina';
   $('start').disabled=sim.phase!=='ready'||!!sim.fault||dirty();
