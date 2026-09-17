@@ -69,6 +69,9 @@ for (const [totalBalls, drawCount, seed] of [[25,15,1701],[25,15,7204],[1,1,901]
       sim.start();
       for(let i=0;i<1600/DT && sim.phase!=='complete';i++) {
         sim.step();
+        assert.ok(sim.phase !== 'loading' || sim.phaseTime < 15,
+          JSON.stringify({problem:'loading stalled',totalBalls,loaded:sim.loaded,
+            remaining:sim.bodies.filter(b=>!b.entered).map(b=>({id:b.id,p:b.p}))}));
         assert.equal(sim.fault,null,JSON.stringify({phase:sim.phase,time:sim.time,loaded:sim.loaded,drawn:sim.drawn,fault:sim.fault}));
         recorded.push(...sim.events.splice(0));
         if (i>0 && i % (60/DT) === 0)
