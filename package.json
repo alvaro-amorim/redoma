@@ -1,0 +1,19 @@
+{
+  "name": "redoma",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Simulador mecânico 3D de sorteio com quantidades configuráveis",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "postinstall": "node scripts/vendor.mjs",
+    "start": "node server.mjs",
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@dimforge/rapier3d-compat": "0.20.0",
+    "three": "0.185.0"
+  }
+}
