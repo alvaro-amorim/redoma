@@ -32,11 +32,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install
-      - name: Record resolved dependencies
-        if: matrix.name == 'Core and assets'
-        run: |
-          node -e "console.log('LOCKFILE_START'); console.log(require('fs').readFileSync('package-lock.json','utf8')); console.log('LOCKFILE_END')"
+      - run: npm ci
       - name: Verify
         env:
           TEST_PATTERN: ${{ matrix.pattern }}
@@ -56,7 +52,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install
+      - run: npm ci
       - uses: actions/upload-artifact@v4
         with:
           name: redoma-static

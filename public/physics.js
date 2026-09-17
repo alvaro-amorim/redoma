@@ -150,7 +150,7 @@ export class LotteryPhysics {
       const z = slot[1] + (this.random() - 0.5) * 0.001;
       const y = 0.350 + Math.floor(i / this.layout.positions.length) * 0.052;
       const rb = this.world.createRigidBody(RAPIER.RigidBodyDesc.dynamic()
-        .setTranslation(x, y, z).setCcdEnabled(true).setCanSleep(false));
+        .setTranslation(x, y, z).setCcdEnabled(true).setCanSleep(true));
       this.world.createCollider(RAPIER.ColliderDesc.ball(B).setMass(MASS)
         .setCollisionGroups(0x00020007).setFriction(0.48).setRestitution(0.57)
         .setFrictionCombineRule(RAPIER.CoefficientCombineRule.Average)

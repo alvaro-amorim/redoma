@@ -7,11 +7,11 @@ Simulação 3D em HTML, CSS e JavaScript, com Three.js e física de corpos rígi
 Requer Node.js 22 ou superior.
 
 ```sh
-npm install
+npm ci
 npm start
 ```
 
-Abra http://localhost:8080. O comando de instalação copia as dependências para `public/vendor`. Depois disso, o aplicativo funciona sem CDN. Para hospedar, publique todo o diretório `public`, incluindo `vendor`.
+Abra http://localhost:8080. O arquivo de lock fixa as versões e integridades das dependências. O comando de instalação copia as dependências para `public/vendor`. Depois disso, o aplicativo funciona sem CDN. Para hospedar, publique todo o diretório `public`, incluindo `vendor`.
 
 ## Usar
 
@@ -29,7 +29,7 @@ Não há seleção por índice aleatório, embaralhamento dos resultados, teletr
 
 Modelo inspirado em um globo mecânico de loteria, **não uma réplica certificada do equipamento da CAIXA**. As bolas usam diâmetro de 50 mm e massa de 66 g; dimensões do globo, pás, comportas, coeficientes de contato e torque são parâmetros aproximados. Não inclui deformação da borracha nem dinâmica completa de fluidos. Também não garante distribuição estatística uniforme nem serve para prever resultados oficiais.
 
-A física usa unidades SI, passo fixo de 1/240 s, detecção contínua de colisões e solver iterativo. A velocidade de reprodução altera o número de passos, nunca o tamanho do passo físico. Se houver saída fora do ciclo ou perda de confinamento, a execução sinaliza falha em vez de fabricar resultados. O tempo de extração depende dos encontros físicos e pode variar.
+A física usa unidades SI, passo fixo de 1/240 s, detecção contínua de colisões e solver iterativo. Corpos em repouso podem dormir automaticamente e voltam a reagir ao receber contatos; o rotor permanece ativo. A velocidade de reprodução altera o número de passos, nunca o tamanho do passo físico. Se houver saída fora do ciclo ou perda de confinamento, a execução sinaliza falha em vez de fabricar resultados. O tempo de extração depende dos encontros físicos e pode variar.
 
 ## Verificação
 
@@ -37,7 +37,7 @@ A física usa unidades SI, passo fixo de 1/240 s, detecção contínua de colis�
 npm test
 ```
 
-Inclui validação de configuração, gravidade, conservação de momento em colisão elástica, extrações sem repetição, saída completa, pausa, reinício e independência dos rótulos. O GitHub Actions executa os testes a cada envio. O estado real das execuções está na aba Actions.
+Inclui validação de configuração, gravidade, conservação de momento em colisão elástica, extrações sem repetição, saída completa, pausa, reinício e independência dos rótulos. O GitHub Actions executa os testes a cada envio. O estado real das execuções está na aba Actions. Após aprovação, o artefato `redoma-static` contém a página pronta para hospedagem, com as bibliotecas incluídas (retenção de 30 dias).
 
 ## Arquivos
 
